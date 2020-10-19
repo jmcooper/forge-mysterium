@@ -11,11 +11,11 @@ public class ItemBase extends Item implements IHasModel {
 	public ItemBase(String name) {
 		setUnlocalizedName(name);
 		setRegistryName(name);
-		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
-		
+		setCreativeTab(CreativeTabs.MATERIALS);
+
 		ModItems.ITEMS.add(this);
 	}
-	
+
 	@Override
 	public void registerModels() {
 		Main.proxy.registerItemRenderer(this, 0, "inventory");

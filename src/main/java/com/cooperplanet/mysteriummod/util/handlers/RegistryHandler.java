@@ -1,5 +1,6 @@
 package com.cooperplanet.mysteriummod.util.handlers;
 
+import com.cooperplanet.mysteriummod.Main;
 import com.cooperplanet.mysteriummod.init.ModBlocks;
 import com.cooperplanet.mysteriummod.init.ModItems;
 import com.cooperplanet.mysteriummod.util.IHasModel;
@@ -10,6 +11,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @EventBusSubscriber
 public class RegistryHandler {
@@ -21,6 +23,7 @@ public class RegistryHandler {
 	@SubscribeEvent
 	public static void onBlockRegister(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));
+		TileEntityHandler.registerTileEntities();
 	}
 
 	@SubscribeEvent
@@ -36,6 +39,10 @@ public class RegistryHandler {
 				((IHasModel)block).registerModels();
 			}
 		}
+	}
+	
+	public static void initRegistries() {
+		NetworkRegistry.INSTANCE.registerGuiHandler(Main.instance,  new GuiHandler());
 	}
 
 }

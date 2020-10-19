@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "burning=false,facing=north": { "model": "mm:mysterium_furrnace" },
+		"burning=false,facing=east": { "model": "mm:mysterium_furrnace", "y": 90 },
+		"burning=false,facing=south": { "model": "mm:mysterium_furrnace", "y": 180 },
+		"burning=false,facing=west": { "model": "mm:mysterium_furrnace", "y": 270 },
+        "burning=true,facing=north": { "model": "mm:mysterium_furrnace_burning" },
+		"burning=true,facing=east": { "model": "mm:mysterium_furrnace_burning", "y": 90 },
+		"burning=true,facing=south": { "model": "mm:mysterium_furrnace_burning", "y": 180 },
+		"burning=true,facing=west": { "model": "mm:mysterium_furrnace_burning", "y": 270 }
+		
+    }
+}

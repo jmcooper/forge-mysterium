@@ -1,0 +1,12 @@
+{
+   "parent": "block/orientable",
+   "textures": {
+   		"particle": "mm:blocks/mysterium_furnace_front_off",
+		"up": "mm:blocks/mysterium_furnace_front_off",
+		"down": "mm:blocks/mysterium_furnace_front_off",
+		"north": "mm:blocks/mysterium_furnace_front_off",
+		"east": "mm:blocks/mysterium_furnace_side1",
+		"south": "mm:blocks/mysterium_furnace_side3",
+		"west": "mm:blocks/mysterium_furnace_side2"
+   }
+}

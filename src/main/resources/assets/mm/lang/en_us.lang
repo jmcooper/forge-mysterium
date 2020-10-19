@@ -1,5 +1,14 @@
 //Items
-//item.ruby.name=Ruby
+item.hammer.name=Hammer
+item.mysterium_powder.name=Mysterium Powder
+item.mysterium_gem.name=Mysterium Gem
+item.energized_coal.name=Energized Coal
 
 //Blocks
 tile.mysterium_block.name=Mysterium
+
+//Tiles
+tile.mysterium_furnace.name=Mysterium Furnace
+
+//Containers
+container.mysterium_furnace=Mysterium Furnace
