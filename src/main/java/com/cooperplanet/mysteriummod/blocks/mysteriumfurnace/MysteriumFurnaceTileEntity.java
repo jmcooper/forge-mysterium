@@ -23,9 +23,11 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 {
-	private ItemStackHandler handler = new ItemStackHandler(3);
+	private ItemStackHandler inputHandler = new ItemStackHandler(1);
+	private ItemStackHandler outputHandler = new ItemStackHandler(1);
+	private ItemStackHandler fuelHandler = new ItemStackHandler(1);
 	private String customName;
-	private ItemStack smelting = ItemStack.EMPTY;
+	private ItemStack outputItem = ItemStack.EMPTY;
 	
 	private int burnTime;
 	private int currentBurnTime;
@@ -37,7 +39,6 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 		ItemStack output = ItemStack.EMPTY;
 		if (input.getItem() == ModItems.MYSTERIUM_POWDER) { 
 			output = new ItemStack(ModItems.MYSTERIUM_GEM);
-			output.grow(1);
 		}
 		return output;
 	}
@@ -52,7 +53,15 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) 
 	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return (T) this.handler;
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (facing == EnumFacing.UP)
+				return (T) inputHandler;
+			
+			if (facing == EnumFacing.SOUTH)
+				return (T) fuelHandler;
+
+			return (T) outputHandler;			
+		}
 		return super.getCapability(capability, facing);
 	}
 	
@@ -76,11 +85,14 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
-		this.handler.deserializeNBT(compound.getCompoundTag("Inventory"));
+		this.inputHandler.deserializeNBT(compound.getCompoundTag("InputInventory"));
+		this.outputHandler.deserializeNBT(compound.getCompoundTag("OutputInventory"));
+		this.fuelHandler.deserializeNBT(compound.getCompoundTag("FuelInventory"));
+		
 		this.burnTime = compound.getInteger("BurnTime");
 		this.cookTime = compound.getInteger("CookTime");
 		this.totalCookTime = compound.getInteger("CookTimeTotal");
-		this.currentBurnTime = getItemBurnTime((ItemStack)this.handler.getStackInSlot(1));
+		this.currentBurnTime = getItemBurnTime((ItemStack)this.fuelHandler.getStackInSlot(0));
 		
 		if(compound.hasKey("CustomName", 8)) this.setCustomName(compound.getString("CustomName"));
 	}
@@ -92,7 +104,10 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 		compound.setInteger("BurnTime", (short)this.burnTime);
 		compound.setInteger("CookTime", (short)this.cookTime);
 		compound.setInteger("CookTimeTotal", (short)this.totalCookTime);
-		compound.setTag("Inventory", this.handler.serializeNBT());
+		
+		compound.setTag("InputInventory", this.inputHandler.serializeNBT());
+		compound.setTag("OutputInventory", this.outputHandler.serializeNBT());
+		compound.setTag("FuelInventory", this.fuelHandler.serializeNBT());
 		
 		if(this.hasCustomName()) compound.setString("CustomName", this.customName);
 		return compound;
@@ -111,81 +126,90 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 	
 	public void update() 
 	{	
+		ItemStack[] inputs = new ItemStack[] {inputHandler.getStackInSlot(0)};
+		ItemStack fuel = this.fuelHandler.getStackInSlot(0);
+
 		if(this.isBurning())
 		{
 			--this.burnTime;
 			MysteriumFurnaceBlock.setState(true, world, pos);
 		}
 		
-		ItemStack[] inputs = new ItemStack[] {handler.getStackInSlot(0)};
-		ItemStack fuel = this.handler.getStackInSlot(1);
-		
-		if(this.isBurning() || !fuel.isEmpty() && !this.handler.getStackInSlot(0).isEmpty())
+		//If burning or fuel is not empty and input is not empty
+		if(this.isBurning() || !fuel.isEmpty() && !this.inputHandler.getStackInSlot(0).isEmpty())
 		{
-			if(!this.isBurning() && this.canSmelt())
+			//If it's not burning and input item is smeltable
+			if(!this.isBurning() && this.canInputBeSmelted())
 			{
+				// set burntime to fuel's burn time since we're not burning currently
 				this.burnTime = getItemBurnTime(fuel);
 				this.currentBurnTime = burnTime;
 				
+				
 				if(this.isBurning() && !fuel.isEmpty())
 				{
-					Item item = fuel.getItem();
 					fuel.shrink(1);
-					
-					if(fuel.isEmpty())
-					{
-						ItemStack item1 = item.getContainerItem(fuel);
-						this.handler.setStackInSlot(2, item1);
-					}
 				}
 			}
 		}
 		
-		if(this.isBurning() && this.canSmelt() && cookTime > 0)
+		//If we've been cooking for a bit already (and we're burning and input can be smelted)
+		if(this.isBurning() && this.canInputBeSmelted() && cookTime > 0)
 		{
 			cookTime++;
+			
+			//if cook time has been met, add output and consume input
 			if(cookTime == totalCookTime)
 			{
-				if(handler.getStackInSlot(2).getCount() > 0)
+				//grow the stack or insert a new item
+				if(outputHandler.getStackInSlot(0).getCount() > 0)
 				{
-					handler.getStackInSlot(2).grow(1);
+					outputHandler.getStackInSlot(0).grow(1);
 				}
 				else
 				{
-					handler.insertItem(2, smelting, false);
+					outputHandler.insertItem(0, outputItem, false);
 				}
 				
-				smelting = ItemStack.EMPTY;
+				//consume an input
+				inputs[0].shrink(1);
+				
+				outputItem = ItemStack.EMPTY;
 				cookTime = 0;
 				return;
 			}
 		}
 		else
 		{
-			if(this.canSmelt() && this.isBurning())
+			// We just inserted new, good fuel (and item can be smelted)
+			if(this.canInputBeSmelted() && this.isBurning())
 			{
 				ItemStack output = getCookingResult(inputs[0]);
 				if(!output.isEmpty())
 				{
-					smelting = output;
+					outputItem = output;
 					cookTime++;
-					inputs[0].shrink(1);
-					handler.setStackInSlot(0, inputs[0]);
+					inputHandler.setStackInSlot(0, inputs[0]);
 				}
 			}
 		}
 	}
 	
-	private boolean canSmelt() 
+	private boolean canInputBeSmelted() 
 	{
-		if(((ItemStack)this.handler.getStackInSlot(0)).isEmpty()) return false;
+		//if input is empty
+		if(((ItemStack)this.inputHandler.getStackInSlot(0)).isEmpty()) 
+			return false;
 		else 
 		{
-			ItemStack result = getCookingResult((ItemStack)this.handler.getStackInSlot(0));
-			if(result.isEmpty()) return false;
+			ItemStack result = getCookingResult((ItemStack)this.inputHandler.getStackInSlot(0));
+			//if input can be smelted
+			if(result.isEmpty()) 
+				return false;
 			else
 			{
-				ItemStack output = (ItemStack)this.handler.getStackInSlot(2);
+				//return true if the output slot is empty or the item in the output slot matches smelting output for current input
+				ItemStack output = (ItemStack)this.outputHandler.getStackInSlot(0);
 				if(output.isEmpty()) return true;
 				if(!output.isItemEqual(result)) return false;
 				int res = output.getCount() + result.getCount();
@@ -196,7 +220,8 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 	
 	public static int getItemBurnTime(ItemStack fuel) 
 	{
-		if(fuel.isEmpty()) return 0;
+		if(fuel.isEmpty()) 
+			return 0;
 		else 
 		{
 			Item item = fuel.getItem();

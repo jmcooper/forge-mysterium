@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -18,14 +19,13 @@ public class MysteriumFurnaceContainer extends Container {
 
 	public MysteriumFurnaceContainer(InventoryPlayer player, MysteriumFurnaceTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
-		IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		IItemHandler inputHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		IItemHandler fuelHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
+		IItemHandler outputHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-		this.addSlotToContainer(new SlotItemHandler(handler, 0, 26, 11)); // Input Slot
-		this.addSlotToContainer(new SlotItemHandler(handler, 1, 26, 59)); // Fuel Slot (Was Slot 2)
-		this.addSlotToContainer(new SlotItemHandler(handler, 2, 81, 36)); // Output slot (Was Slot 3)
-
-		// this.addSlotToContainer(new SlotItemHandler(handler, 1, 26, 59)); //Unused
-		// Input Slot 2
+		this.addSlotToContainer(new SlotItemHandler(inputHandler, 0, 26, 11)); // Input Slot
+		this.addSlotToContainer(new SlotItemHandler(fuelHandler, 0, 26, 59)); // Fuel Slot (Was Slot 2)
+		this.addSlotToContainer(new SlotItemHandler(outputHandler, 0, 81, 36)); // Output slot (Was Slot 3)
 
 		// Inventory Slots
 		for (int y = 0; y < 3; y++) {

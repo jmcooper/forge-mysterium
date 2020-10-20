@@ -13,11 +13,11 @@ public class MysteriumFurnaceGui extends GuiContainer
 	private final InventoryPlayer player;
 	private final MysteriumFurnaceTileEntity tileEntity;
 	
-	public MysteriumFurnaceGui(InventoryPlayer player, MysteriumFurnaceTileEntity tileentity) 
+	public MysteriumFurnaceGui(InventoryPlayer player, MysteriumFurnaceTileEntity tileEntity) 
 	{
-		super(new MysteriumFurnaceContainer(player, tileentity));
+		super(new MysteriumFurnaceContainer(player, tileEntity));
 		this.player = player;
-		this.tileEntity = tileentity;
+		this.tileEntity = tileEntity;
 	}
 	
 	@Override
