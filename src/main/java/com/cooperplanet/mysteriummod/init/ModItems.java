@@ -13,6 +13,7 @@ public class ModItems {
 	public static final Item HAMMER = new ItemBase("hammer");
 	public static final Item MYSTERIUM_POWDER = new ItemBase("mysterium_powder");
 	public static final Item MYSTERIUM_GEM = new ItemBase("mysterium_gem");
+	public static final Item MYSTERIUM_GEODE = new ItemBase("mysterium_geode");
 	public static final Item ENERGIZED_COAL = new ItemBase("energized_coal");
 	
 //	To make new items:

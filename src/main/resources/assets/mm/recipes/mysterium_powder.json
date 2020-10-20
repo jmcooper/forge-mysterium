@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "   ",
+        "H  ",
+        " M "
+    ],
+    
+    "key":
+    {
+        "H":
+        {
+            "item": "mm:hammer"
+        },
+        "M":
+        {
+            "item": "mm:mysterium_geode"
+        }
+
+    },
+    
+    "result":
+    {
+        "item": "mm:mysterium_powder",
+        "count": 1
+    }
+}

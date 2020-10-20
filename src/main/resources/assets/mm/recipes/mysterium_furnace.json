@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "GDG",
+        "DMD",
+        "GDG"
+    ],
+    
+    "key":
+    {
+        "D":
+        {
+            "item": "minecraft:diamond"
+        },
+        "G":
+        {
+            "item": "minecraft:gold"
+        },
+        "M":
+        {
+            "item": "mm:mysterium_block"
+        }
+
+    },
+    
+    "result":
+    {
+        "item": "mm:mysterium_furnace",
+        "count": 1
+    }
+}

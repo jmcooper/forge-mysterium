@@ -2,6 +2,7 @@ package com.cooperplanet.mysteriummod;
 
 import com.cooperplanet.mysteriummod.proxy.CommonProxy;
 import com.cooperplanet.mysteriummod.util.Reference;
+import com.cooperplanet.mysteriummod.util.handlers.MysteriumGemRecipeHandler;
 import com.cooperplanet.mysteriummod.util.handlers.RegistryHandler;
 import com.cooperplanet.mysteriummod.world.ModWorldGenerator;
 
@@ -25,6 +26,7 @@ public class Main {
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
+		MysteriumGemRecipeHandler.registerRandomRecipe();
 	}
 	
 	@EventHandler

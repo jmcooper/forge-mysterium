@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "   ",
+        " C ",
+        "RRR"
+    ],
+    
+    "key":
+    {
+        "C":
+        {
+            "item": "minecraft:coal"
+        },
+        "R":
+        {
+            "item": "minecraft:redstone"
+        }
+
+    },
+    
+    "result":
+    {
+        "item": "mm:energized_coal",
+        "count": 1
+    }
+}
