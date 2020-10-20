@@ -21,7 +21,9 @@ public class RandomItemRecipe implements IRecipe {
 		for (int i = 0; i < 9; i++) {
 			String itemName = inv.getStackInSlot(i).getItem().getUnlocalizedName();
 			if (itemName.equals("tile.air")) airStackCount++;
-			if (itemName.equals("item.mysterium_gem")) mysteriumGemStackCount++;
+			if (itemName.equals("item.mysterium_gem")) {
+				mysteriumGemStackCount++;
+			}
 		}
 
 		return airStackCount == 8 && mysteriumGemStackCount == 1;
@@ -29,7 +31,16 @@ public class RandomItemRecipe implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		return new ItemStack(Item.REGISTRY.getRandomObject(new Random()));
+		int slotIndex = -1;
+		for (int i = 0; i < 9; i++) {
+			if(inv.getStackInSlot(i).getItem().getUnlocalizedName().equals("item.mysterium_gem")) {
+				slotIndex = i;
+			}
+		}
+		if (slotIndex == -1) return ItemStack.EMPTY;
+		
+		int randomItemId = inv.getStackInSlot(slotIndex).getTagCompound().getInteger("randomItemId");
+		return new ItemStack(Item.getItemById(randomItemId));
 	}
 
 	@Override

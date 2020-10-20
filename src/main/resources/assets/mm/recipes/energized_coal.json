@@ -4,15 +4,15 @@
     "pattern":
     [
         "   ",
-        " C ",
-        "RRR"
+        "CR ",
+        "RR "
     ],
     
     "key":
     {
         "C":
         {
-            "item": "minecraft:coal"
+            "item": "minecraft:coal","data":0
         },
         "R":
         {

@@ -1,5 +1,7 @@
 package com.cooperplanet.mysteriummod.blocks.mysteriumfurnace;
 
+import java.util.Random;
+
 import com.cooperplanet.mysteriummod.init.ModItems;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +41,15 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 		ItemStack output = ItemStack.EMPTY;
 		if (input.getItem() == ModItems.MYSTERIUM_POWDER) { 
 			output = new ItemStack(ModItems.MYSTERIUM_GEM);
+			NBTTagCompound nbt;
+			if (output.hasTagCompound()) 
+				nbt = output.getTagCompound();
+			else
+				nbt = new NBTTagCompound();
+			
+			int randomItemId = Item.getIdFromItem(Item.REGISTRY.getRandomObject(new Random()));
+			nbt.setInteger("randomItemId", randomItemId);
+			output.setTagCompound(nbt);
 		}
 		return output;
 	}

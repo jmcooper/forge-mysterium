@@ -16,11 +16,11 @@
         },
         "G":
         {
-            "item": "minecraft:gold"
+            "item": "minecraft:gold_ingot"
         },
         "M":
         {
-            "item": "mm:mysterium_block"
+            "item": "mm:mysterium_powder"
         }
 
     },
