@@ -211,21 +211,23 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 		//if input is empty
 		if(((ItemStack)this.inputHandler.getStackInSlot(0)).isEmpty()) 
 			return false;
-		else 
+		
+		//if the output slot is already occupied (only one gem can be stacked at a time
+		if (outputHandler.getStackInSlot(0).getCount() > 0)
+			return false;
+		
+		ItemStack result = getCookingResult((ItemStack)this.inputHandler.getStackInSlot(0));
+		//if input can be smelted
+		if(result.isEmpty()) 
+			return false;
+		else
 		{
-			ItemStack result = getCookingResult((ItemStack)this.inputHandler.getStackInSlot(0));
-			//if input can be smelted
-			if(result.isEmpty()) 
-				return false;
-			else
-			{
-				//return true if the output slot is empty or the item in the output slot matches smelting output for current input
-				ItemStack output = (ItemStack)this.outputHandler.getStackInSlot(0);
-				if(output.isEmpty()) return true;
-				if(!output.isItemEqual(result)) return false;
-				int res = output.getCount() + result.getCount();
-				return res <= 64 && res <= output.getMaxStackSize();
-			}
+			//return true if the output slot is empty or the item in the output slot matches smelting output for current input
+			ItemStack output = (ItemStack)this.outputHandler.getStackInSlot(0);
+			if(output.isEmpty()) return true;
+			if(!output.isItemEqual(result)) return false;
+			int res = output.getCount() + result.getCount();
+			return res <= 64 && res <= output.getMaxStackSize();
 		}
 	}
 	
