@@ -68,7 +68,7 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 			if (facing == EnumFacing.UP)
 				return (T) inputHandler;
 			
-			if (facing == EnumFacing.SOUTH)
+			if (facing == EnumFacing.DOWN)
 				return (T) fuelHandler;
 
 			return (T) outputHandler;			
