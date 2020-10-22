@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 
 //slots: 0, 1 = inputs, 2 = fuel, 3 = output
@@ -65,13 +66,20 @@ public class MysteriumFurnaceTileEntity extends TileEntity implements ITickable
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) 
 	{
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			//if the block at myself isn't myself, allow full access (Block Broken)
+			if(world != null && world.getBlockState(pos).getBlock() != getBlockType())
+				return (T) new CombinedInvWrapper(inputHandler, fuelHandler, outputHandler);
+				
 			if (facing == EnumFacing.UP)
 				return (T) inputHandler;
 			
 			if (facing == EnumFacing.DOWN)
-				return (T) fuelHandler;
+				return (T) outputHandler;
 
-			return (T) outputHandler;			
+			if (facing != null)
+				return (T) fuelHandler;
+			
+			return (T) new CombinedInvWrapper(inputHandler, fuelHandler, outputHandler);			
 		}
 		return super.getCapability(capability, facing);
 	}

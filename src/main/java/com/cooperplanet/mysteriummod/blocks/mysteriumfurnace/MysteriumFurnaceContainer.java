@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 public class MysteriumFurnaceContainer extends Container {
 	private final MysteriumFurnaceTileEntity tileEntity;
@@ -20,8 +21,8 @@ public class MysteriumFurnaceContainer extends Container {
 	public MysteriumFurnaceContainer(InventoryPlayer player, MysteriumFurnaceTileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 		IItemHandler inputHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-		IItemHandler fuelHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.SOUTH);
-		IItemHandler outputHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		IItemHandler outputHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+		IItemHandler fuelHandler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.EAST);
 
 		this.addSlotToContainer(new SlotItemHandler(inputHandler, 0, 26, 11)); // Input Slot
 		this.addSlotToContainer(new SlotItemHandler(fuelHandler, 0, 26, 59)); // Fuel Slot (Was Slot 2)
@@ -73,11 +74,14 @@ public class MysteriumFurnaceContainer extends Container {
 		return this.tileEntity.isUsableByPlayer(playerIn);
 	}
 
+	
+	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 		ItemStack stack = ItemStack.EMPTY;
 		Slot slotForIndexPassedIn = (Slot) this.inventorySlots.get(index);
-
+		
+		System.out.println("transferStackInSlot" + index);
 		if (slotForIndexPassedIn != null && slotForIndexPassedIn.getHasStack()) {
 			ItemStack stackForSlotIndexPassedIn = slotForIndexPassedIn.getStack();
 			stack = stackForSlotIndexPassedIn.copy();
@@ -101,19 +105,19 @@ public class MysteriumFurnaceContainer extends Container {
 					}
 					// If slot index is an inventory slot, attempt to place in another inventory
 					// slot
-					else if (index >= 4 && index < 31) {
-						if (!this.mergeItemStack(stackForSlotIndexPassedIn, 31, 40, false))
+					else if (index >= 3 && index < 30) {
+						if (!this.mergeItemStack(stackForSlotIndexPassedIn, 30, 38, false))
 							return ItemStack.EMPTY;
 					}
-					// If item is player slot, attempt to merge into a player slot
-					else if (index >= 31 && index < 40
-							&& !this.mergeItemStack(stackForSlotIndexPassedIn, 4, 31, false)) {
+					// If item is player slot, attempt to merge into an inventory slot
+					else if (index >= 31 && index < 39
+							&& !this.mergeItemStack(stackForSlotIndexPassedIn, 3, 29, false)) {
 						return ItemStack.EMPTY;
 					}
 				}
 			}
 			// if space in player's inventory, merge into player's inventory
-			else if (!this.mergeItemStack(stackForSlotIndexPassedIn, 4, 40, false)) {
+			else if (!this.mergeItemStack(stackForSlotIndexPassedIn, 4, 39, false)) {
 				return ItemStack.EMPTY;
 			}
 

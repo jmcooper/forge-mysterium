@@ -17,7 +17,7 @@ public class Hammer extends ItemBase {
 	@Override
 	public ItemStack getContainerItem(ItemStack itemStack) {
 		this.setDamage(itemStack, this.getDamage(itemStack) + 1);
-		return super.getContainerItem(itemStack);
+		 return new ItemStack(this.getContainerItem());
 	}
 	
 }
