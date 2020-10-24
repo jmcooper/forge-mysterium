@@ -3,6 +3,7 @@ package com.cooperplanet.mysteriummod.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cooperplanet.mysteriummod.items.Hammer;
 import com.cooperplanet.mysteriummod.items.ItemBase;
 
 import net.minecraft.item.Item;
@@ -10,7 +11,7 @@ import net.minecraft.item.Item;
 public class ModItems {
 	public static final List<Item> ITEMS = new ArrayList<Item>();
 	
-	public static final Item HAMMER = new ItemBase("hammer");
+	public static final Item HAMMER = new Hammer();
 	public static final Item MYSTERIUM_POWDER = new ItemBase("mysterium_powder");
 	public static final Item MYSTERIUM_GEM = new ItemBase("mysterium_gem");
 	public static final Item MYSTERIUM_GEODE = new ItemBase("mysterium_geode");

@@ -3,16 +3,17 @@
     
     "pattern":
     [
-        "   ",
         "H  ",
-        " M "
+        " M ",
+        "   "
     ],
     
     "key":
     {
         "H":
         {
-            "item": "mm:hammer"
+            "item": "mm:hammer",
+			"data": 32767
         },
         "M":
         {

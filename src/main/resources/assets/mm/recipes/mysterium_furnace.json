@@ -12,15 +12,15 @@
     {
         "D":
         {
-            "item": "minecraft:diamond"
+            "item":  "minecraft:diamond_block"
         },
         "G":
         {
-            "item": "minecraft:gold_ingot"
+            "item": "minecraft:gold_block"
         },
         "M":
         {
-            "item": "mm:mysterium_powder"
+            "item": "mm:mysterium_geode"
         }
 
     },
