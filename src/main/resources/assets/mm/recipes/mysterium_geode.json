@@ -1,0 +1,40 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "GDR",
+        "D D",
+        "YDC"
+    ],
+    
+    "key":
+    {
+        "G":
+        {
+            "item": "minecraft:dye","data":2
+        },
+        "R":
+        {
+            "item": "minecraft:dye","data":1
+        },
+        "D":
+        {
+            "item": "minecraft:diamond"
+        },
+        "Y":
+        {
+            "item": "minecraft:dye","data":11
+        },
+        "C":
+        {
+            "item": "minecraft:dye","data":6
+        }
+    },
+    
+    "result":
+    {
+        "item": "mm:mysterium_geode",
+        "count": 1
+    }
+}
